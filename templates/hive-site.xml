@@ -24,4 +24,28 @@
     <value>{{ postgres_superuser_password }}</value>
     <description>password to use against metastore database</description>
   </property>
+
+  <property>
+    <name>hive.execution.mode</name>
+    <value>llap</value>
+    <description>
+      Expects one of [container, llap].
+      Chooses whether query fragments will run in container or in llap
+    </description>
+  </property>
+
+  <property>
+    <name>hive.llap.execution.mode</name>
+    <value>all</value>
+    <description>
+      Expects one of [auto, none, all, map].
+      Chooses whether query fragments will run in container or in llap
+    </description>
+  </property>
+
+  <property>
+    <name>hive.execution.engine</name>
+    <value>tez</value>
+  </property>
+
 </configuration>
