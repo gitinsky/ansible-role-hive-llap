@@ -48,4 +48,14 @@
     <value>tez</value>
   </property>
 
+  <property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value>{{ zookeeper_client_port }}</value>
+  </property>
+
+  <property>
+    <name>hbase.zookeeper.quorum</name>
+    <value>{{ zookeeper_quorum }}</value>
+  </property>
+
 </configuration>
