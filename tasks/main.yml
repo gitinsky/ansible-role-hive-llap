@@ -1,0 +1,37 @@
+---
+- name: checkout Hive/LLAP
+  git: repo=https://github.com/apache/hive.git dest=/opt/hive-llap version=llap
+
+- name: download Maven
+  get_url: url=http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz dest=/root/apache-maven-3.3.3-bin.tar.gz
+
+- name: unpack Maven
+  shell: cd /opt && tar xzvf /root/apache-maven-3.3.3-bin.tar.gz creates=/opt/apache-maven-3.3.3
+
+- name: build Hive
+  shell: cd /opt/hive-llap && JAVA_HOME=/usr/java/jdk1.8.0_40 /opt/apache-maven-3.3.3/bin/mvn clean install -Phadoop-2,dist creates=/opt/hive-llap/packaging/target/apache-hive-2.0.0-SNAPSHOT-bin/apache-hive-2.0.0-SNAPSHOT-bin
+
+- name: put Hive config
+  template: src=hive-site.xml dest=/opt/hive-llap/packaging/target/apache-hive-2.0.0-SNAPSHOT-bin/apache-hive-2.0.0-SNAPSHOT-bin/conf/hive-site.xml
+
+- name: download PostgreSQL JDBC driver
+  get_url: url=https://jdbc.postgresql.org/download/postgresql-9.4-1201.jdbc4.jar dest=/opt/hive-llap/packaging/target/apache-hive-2.0.0-SNAPSHOT-bin/apache-hive-2.0.0-SNAPSHOT-bin/lib/postgresql-9.4-1201.jdbc4.jar
+
+- name: put .pgpass
+  template: src=.pgpass dest=/root/.pgpass mode=0600
+
+- name: install postgresql client
+  apt: name=postgresql-client-9.3 state=present
+
+- name: check if the DB is present
+  shell: psql -U postgres -h 172.17.42.1 -l | grep hive_metastore
+  ignore_errors: True
+  register: result
+
+- name: create a DB
+  shell: echo "CREATE DATABASE hive_metastore;" | psql -U postgres -h 172.17.42.1
+  when: result|failed
+
+- name: create a DB schema
+  shell: cd /opt/hive-llap/packaging/target/apache-hive-2.0.0-SNAPSHOT-bin/apache-hive-2.0.0-SNAPSHOT-bin/scripts/metastore/upgrade/postgres/ && psql -U postgres -h 172.17.42.1 -f hive-schema-2.0.0.postgres.sql hive_metastore
+  when: result|failed
