@@ -1,6 +1,6 @@
 ---
 - name: checkout Hive/LLAP
-  git: repo=https://github.com/apache/hive.git dest={{ hive_dest_dir }} version=e6ea691d34b1ee12c335a2023849c5c445bfb660
+  git: repo=https://github.com/apache/hive.git dest={{ hive_dest_dir }} version=llap
 
 - name: download Maven
   get_url: url=http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz dest=/root/apache-maven-3.3.3-bin.tar.gz
@@ -9,7 +9,7 @@
   shell: cd /opt && tar xzvf /root/apache-maven-3.3.3-bin.tar.gz creates=/opt/apache-maven-3.3.3
 
 - name: build Hive
-  shell: cd {{ hive_dest_dir }} && JAVA_HOME=/usr/java/jdk1.8.0_40 /opt/apache-maven-3.3.3/bin/mvn clean install -Phadoop-2,dist creates={{ hive_dest_dir }}/packaging/target/apache-hive-2.0.0-SNAPSHOT-bin/apache-hive-2.0.0-SNAPSHOT-bin
+  shell: cd {{ hive_dest_dir }} && JAVA_HOME=/usr/java/jdk1.8.0_40 /opt/apache-maven-3.3.3/bin/mvn clean install -Dmaven.test.skip=true -Phadoop-2,dist creates={{ hive_dest_dir }}/packaging/target/apache-hive-2.0.0-SNAPSHOT-bin/apache-hive-2.0.0-SNAPSHOT-bin
 
 - name: put Hive config
   template: src=hive-site.xml dest={{ hive_dest_dir }}/packaging/target/apache-hive-2.0.0-SNAPSHOT-bin/apache-hive-2.0.0-SNAPSHOT-bin/conf/hive-site.xml
