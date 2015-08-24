@@ -2,6 +2,117 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
   <property>
+    <name>tez.am.container.reuse.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>hive.server2.enable.impersonation</name>
+    <description>Enable user impersonation for HiveServer2</description>
+    <value>true</value>
+  </property>
+
+<!-- added by Indrikov -->
+
+  <property>
+    <name>hive.prewarm.enabled</name>
+    <value>true</value>
+    <description>Enables container prewarm for Tez (Hadoop 2 only).</description>
+  </property>
+
+  <property>
+    <name>hive.prewarm.numcontainers</name>
+    <value>10</value>
+    <description>Controls the number of containers to prewarm for Tez (Hadoop 2 only).</description>
+  </property>
+
+  <property>
+    <name>hive.llap.io.enabled</name>
+    <!-- default -->
+    <value>false</value>
+    <description/>
+  </property>
+
+  <property>
+    <name>hive.llap.io.use.lowlevel.cache</name>
+    <value>true</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.io.cache.orc.alloc.min</name>
+    <value>131072</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.io.cache.orc.alloc.max</name>
+    <value>16777216</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.io.cache.orc.arena.size</name>
+    <value>134217728</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.io.cache.orc.size</name>
+    <value>1073741824</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.io.cache.direct</name>
+    <value>true</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.io.use.lrfu</name>
+    <value>false</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.io.lrfu.lambda</name>
+    <value>0.01</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.io.orc.time.counters</name>
+    <value>true</value>
+    <description/>
+  </property>
+  <property>
+    <name>hive.llap.auto.allow.uber</name>
+    <value>true</value>
+    <description>Whether or not to allow the planner to run vertices in the AM</description>
+  </property>
+  <property>
+    <name>hive.llap.auto.enforce.tree</name>
+    <value>true</value>
+    <description>Enforce that all parents are in llap, before considering vertex</description>
+  </property>
+  <property>
+    <name>hive.llap.auto.enforce.vectorized</name>
+    <value>true</value>
+    <description>Enforce that inputs are vectorized, before considering vertex</description>
+  </property>
+  <property>
+    <name>hive.llap.auto.enforce.stats</name>
+    <value>true</value>
+    <description>Enforce that col stats are available, before considering vertex</description>
+  </property>
+  <property>
+    <name>hive.llap.auto.max.input.size</name>
+    <value>1073741824</value>
+    <description>Check input size, before considering vertex (-1 disables check)</description>
+  </property>
+  <property>
+    <name>hive.llap.auto.max.output.size</name>
+    <value>1073741824</value>
+    <description>Check output size, before considering vertex (-1 disables check)</description>
+  </property>
+
+
+<!-- End of added by Indrikov -->
+
+  <property>
     <name>javax.jdo.option.ConnectionURL</name>
     <value>jdbc:postgresql://172.17.42.1/hive_metastore?createDatabaseIfNotExist=true</value>
     <description>JDBC connect string for a JDBC metastore</description>
